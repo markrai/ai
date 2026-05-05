@@ -1,0 +1,26 @@
+{
+  "DefaultModel": "gpt",
+  "Aliases": {
+    "q30": "qwen3:30b",
+    "q14": "qwen3:14b",
+    "coder": "qwen2.5-coder:32b",
+    "ds": "dagbs/deepseek-coder-v2-lite-instruct:q5_k_m",
+    "r1": "deepseek-r1:14b",
+    "gpt": "gpt-oss:20b",
+    "dev": "devstral:latest"
+  },
+  "Routing": [
+    {
+      "Pattern": "architecture|stack|dependency|dependencies|build|run|setup",
+      "Model": "q30"
+    },
+    {
+      "Pattern": "why|reason|race|deadlock|root cause|debug",
+      "Model": "r1"
+    },
+    {
+      "Pattern": "script|powershell|cmd|regex|docker|git",
+      "Model": "coder"
+    }
+  ]
+}
