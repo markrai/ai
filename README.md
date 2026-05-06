@@ -7,11 +7,12 @@ A minimal Windows helper that runs **local models through [Ollama](https://ollam
 
 - **Windows** with **PowerShell** (the entry point is `ai.cmd` calling `ai.ps1`).
 - **[Ollama](https://ollama.com/)** installed and on your `PATH`, so `ollama run` works from a terminal.
+- Pull the models you reference in [`.ai-config.json`](.ai-config.json) (or use `ollama pull <model>` after editing aliases).
 
 ## Optional
 
 - **[ripgrep](https://github.com/BurntSushi/ripgrep)** (`rg` on your `PATH`) for `ai rg` and automatic repo search. Without it, the script warns and falls back to the older context or file-snippet paths.
-- Pull the models you reference in [`.ai-config.json`](.ai-config.json) (or use `ollama pull <model>` after editing aliases).
+
 
 ## Files
 
