@@ -11,7 +11,20 @@ A minimal Windows helper that runs **local models through [Ollama](https://ollam
 
 ## Optional
 
-- **[ripgrep](https://github.com/BurntSushi/ripgrep)** (`rg` on your `PATH`) for `ai rg` and automatic repo search. Without it, the script warns and falls back to the older context or file-snippet paths.
+### ripgrep (`rg`)
+
+**[ripgrep](https://github.com/BurntSushi/ripgrep)** adds `ai rg` and automatic repo search from real grep hits. Without `rg` on your `PATH`, the script warns (unless disabled below) and falls back to file-list context or file-snippet search.
+
+**Install `rg` (Windows, pick one):**
+
+- [Chocolatey](https://chocolatey.org/): `choco install ripgrep`
+- [Scoop](https://scoop.sh/): `scoop install main/ripgrep`
+- [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/): `winget install BurntSushi.ripgrep.MSVC`
+- Or download a release from the [ripgrep releases](https://github.com/BurntSushi/ripgrep/releases) page and put `rg.exe` on your `PATH`.
+
+Confirm in a new terminal: `where rg` and `rg --version`.
+
+**Enable ripgrep in this repo:** [`ai.ps1`](ai.ps1) defines `$script:DisableRipgrep` near the top (next to `MaxHitLines`). Set it to **`$false`** so the script will call `rg` when it is installed. Set it to **`$true`** to turn off ripgrep again without uninstalling it (no "not on PATH" warning in that case).
 
 
 ## Files
