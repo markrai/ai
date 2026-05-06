@@ -7,6 +7,7 @@ $ErrorActionPreference = "Stop"
 
 $script:MaxHitLines = 400
 $script:MaxEvidenceChars = 120000
+$script:DisableRipgrep = $true
 
 $CliArgs = @($CliArgs | ForEach-Object { [string]$_ })
 
@@ -160,6 +161,9 @@ function Get-AutoModel {
 }
 
 function Test-RgAvailable {
+    if ($script:DisableRipgrep) {
+        return $false
+    }
     $c = Get-Command rg -ErrorAction SilentlyContinue
     return $null -ne $c
 }
@@ -936,7 +940,7 @@ if ($targets.Count -gt 0) {
 $rgReady = Test-RgAvailable
 $useRgPipeline = $wantRg -and $rgReady
 
-if ($wantRg -and -not $rgReady) {
+if ($wantRg -and -not $rgReady -and -not $script:DisableRipgrep) {
     Write-Warning "rg (ripgrep) not found on PATH; falling back without ripgrep evidence."
 }
 
