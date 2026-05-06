@@ -1,11 +1,16 @@
 # AI Operator (`ai`)
 
+A tiny Windows/Ollama ai command for asking local models repo-aware questions using real ripgrep evidence.
 A minimal Windows helper that runs **local models through [Ollama](https://ollama.com/)** with sensible defaults: model aliases, automatic model routing from your prompt, and lightweight **project or file context** injected into the prompt (no IDE required).
 
 ## Prerequisites
 
 - **Windows** with **PowerShell** (the entry point is `ai.cmd` calling `ai.ps1`).
 - **[Ollama](https://ollama.com/)** installed and on your `PATH`, so `ollama run` works from a terminal.
+
+## Optional
+
+- **[ripgrep](https://github.com/BurntSushi/ripgrep)** (`rg` on your `PATH`) for `ai rg` and automatic repo search. Without it, the script warns and falls back to the older context or file-snippet paths.
 - Pull the models you reference in [`.ai-config.json`](.ai-config.json) (or use `ollama pull <model>` after editing aliases).
 
 ## Files
@@ -70,6 +75,8 @@ If you pass one or more **files** and the prompt looks like a “where / find / 
 
 ## Examples
 
+For a larger command cookbook, see [EXAMPLES.md](EXAMPLES.md).
+
 ```bat
 ai "What stack are we using?"
 ai q30 "How should dependencies be organized?"
@@ -84,3 +91,13 @@ ai ls
 - Depends on **`ollama`** being available in the shell.
 - Repo context is capped at **50** tracked files; explicit mode sends **whole file** text for targeted files (except locator mode).
 - **Auto-created** `.ai-config.json` (when missing) may differ slightly from the committed sample (e.g. default model); compare with this repo’s [`.ai-config.json`](.ai-config.json) if you want the same aliases out of the box.
+
+## Manual acceptance (ripgrep paths)
+
+Run these in a real git repo with **`rg`** and **`ollama`** available when checking model output:
+
+- `ai "find the project wall routes"` — search plan should include **wall**, **project**, **routes** (not only **routes**); evidence or follow-up behavior should reflect that vocabulary.
+- `ai internal/mcp "find json-rpc handler"` — if ripgrep finds no hits, fallback must **not** widen to whole-repo file-list context; it stays scoped to the chosen targets (empty-evidence or target-scoped prompt).
+- `ai rg "where is bearer token validation?"` — with no hits, **Ollama** still runs with the **empty-evidence** instruction path.
+- `ai "write a PowerShell script that prints hello"` — must **not** trigger **auto-rg** (generative prompt).
+- `ai q30 internal/mcp rg "explain the MCP routing"` — the **q30** alias must still select the **q30** model after resolution.
